@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {Modal, Button, Form, Input, Icon, Table} from 'antd'
 import {connect} from 'react-redux'
 import {fLASE, TRUE, GETLIST} from '../../action-type/user'
-import {create, ArticlesList,AddPv} from '../../axios/articles'
+import {create, ArticlesList, AddPv} from '../../axios/articles'
 import {List} from '../../axios/categories'
+
 class Articles extends Component {
     constructor(props) {
         super(props);
@@ -28,7 +29,7 @@ class Articles extends Component {
     getList = async (where) => {
         let res = await ArticlesList(where);
         let data = this._name;
-        res.result = res.result.map((item,index) => {
+        res.result = res.result.map((item, index) => {
             item.key = item._id;
             item.name = data[index]
             return item;
@@ -45,7 +46,7 @@ class Articles extends Component {
 
     async componentDidMount() {
         let data = await List();
-       this._name = this.props.getName(data.result);
+        this._name = this.props.getName(data.result);
         await  this.getList();
     }
 
@@ -79,7 +80,7 @@ class Articles extends Component {
             },
             {
                 title: '操作',
-                render:(value, item) =>{
+                render: (value, item) => {
                     return (
                         <Button.Group>
                             <Button onClick={async () => {
@@ -94,7 +95,7 @@ class Articles extends Component {
                             >编辑</Button>
                             <Button onClick={async () => {
                                 this.props.Close()
-                             await AddPv(item._id)
+                                await AddPv(item._id)
                                 await this.getList()
                             }}>评论</Button>
                             <Button style={{margin: '0 10px'}}
@@ -109,7 +110,7 @@ class Articles extends Component {
         ];
         return (
             <div>
-                <header style={{display: 'flex', justifyContent: 'space-between',padding:'5px 10px'}}>
+                <header style={{display: 'flex', justifyContent: 'space-between', padding: '5px 10px'}}>
                     <Button
                         type="primary"
                         style={{margin: '0 10px'}}
@@ -121,7 +122,7 @@ class Articles extends Component {
                         删除文章
                     </Button>
                     <Input.Search
-                        style={{marginLeft:'10px'}}
+                        style={{marginLeft: '10px'}}
                         placeholder="input search text"
                         enterButton="Search"
                         onSearch={value => console.log(value)}
@@ -180,6 +181,6 @@ const dispatch = (dispatch) => ({
     show: () => {
         dispatch({type: TRUE})
     },
-    getName: (result) => dispatch({type: GETLIST,result})
+    getName: (result) => dispatch({type: GETLIST, result})
 });
 export default connect(state => state.articles, dispatch)(Articles)
